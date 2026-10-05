@@ -1,11 +1,11 @@
 // Genereert de placeholder-SVG's in public/images/. Draai: node scripts/generate-images.mjs
 import { writeFileSync } from 'node:fs'
 
-const RED = '#DC0032'
+const RED = '#E31A2F'
 const W = 800
 const H = 600
 
-const frame = (name, cat, art) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${name}">
+const frame = (name, _cat, art) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${name}">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7F7F8"/><stop offset="1" stop-color="#E3E3E5"/></linearGradient>
     <linearGradient id="body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#D9D9DC"/></linearGradient>
@@ -14,8 +14,7 @@ const frame = (name, cat, art) => `<svg xmlns="http://www.w3.org/2000/svg" viewB
   <rect x="0" y="0" width="14" height="${H}" fill="${RED}"/>
   <ellipse cx="420" cy="470" rx="250" ry="22" fill="#111" opacity=".12"/>
   ${art}
-  <text x="56" y="76" font-family="Barlow Semi Condensed, Arial, sans-serif" font-size="22" font-weight="600" fill="#5C5C60">${cat}</text>
-  <text x="56" y="132" font-family="Barlow Semi Condensed, Arial, sans-serif" font-size="56" font-weight="700" fill="#111">${name}</text>
+  <text x="56" y="96" font-family="Barlow Semi Condensed, Arial, sans-serif" font-size="48" font-weight="700" fill="#111">${name}</text>
 </svg>
 `
 

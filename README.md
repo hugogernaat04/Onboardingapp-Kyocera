@@ -73,11 +73,11 @@ Nu gebruiken alle producten dezelfde YouTube-dummyvideo (`DUMMY_VIDEO` bovenaan 
 
 ## Het officiële logo plaatsen
 
-Zet het officiële Kyocera-logo als **`public/brand/kyocera-logo.svg`** (of `kyocera-logo.png`) neer. Het wordt automatisch gebruikt in de header, de footer en als favicon. Zonder bestand toont de site de tekst "KYOCERA" in de merkkleur.
+Het Kyocera-logo staat al in **`public/brand/kyocera-logo.svg`** (afkomstig van Wikimedia Commons). Heb je een eigen officieel bestand, overschrijf het dan (ook `kyocera-logo.png` werkt). Het wordt automatisch gebruikt in de header, de footer en als favicon. Zonder bestand toont de site de tekst "KYOCERA" in de merkkleur.
 
 ## Huisstijl aanpassen
 
-Kleuren en lettertypen staan als design tokens in [`tailwind.config.ts`](tailwind.config.ts). Het primaire Kyocera-rood is `kyocera.red`. De hexwaarde (`#DC0032`) is een benadering van het merkrood; controleer die aan de hand van de officiële huisstijlgids en pas hem op die ene plek aan.
+Kleuren en lettertypen staan als design tokens in [`tailwind.config.ts`](tailwind.config.ts). Het primaire Kyocera-rood is `kyocera.red`. De hexwaarde (`#E31A2F`) komt uit het logobestand; controleer hem aan de hand van de officiële huisstijlgids.
 
 ## Mappenstructuur
 

@@ -7,7 +7,7 @@ import { Logo } from './Logo'
 
 const navClass = ({ isActive }: { isActive: boolean }) =>
   `inline-flex min-h-12 items-center rounded-lg px-4 font-semibold transition-colors ${
-    isActive ? 'bg-white/15 text-white' : 'text-white/85 hover:bg-white/10 hover:text-white'
+    isActive ? 'bg-fog text-ink' : 'text-graphite hover:bg-fog hover:text-ink'
   }`
 
 export function Header() {
@@ -36,16 +36,16 @@ export function Header() {
   )
 
   return (
-    <header className="on-dark sticky top-0 z-40 bg-ink text-white">
+    <header className="sticky top-0 z-40 border-b border-mist border-t-4 border-t-kyocera-red bg-white text-ink">
       <div className="container-page flex h-16 items-center justify-between gap-4">
         <Link to="/" className="flex min-h-12 items-center gap-3 rounded-lg" aria-label="Kyocera productonboarding, naar overzicht">
-          <span className="rounded bg-white px-2.5 py-1.5"><Logo className="h-6" /></span>
-          <span className="hidden font-display text-lg font-semibold sm:inline">Productonboarding</span>
+          <Logo className="h-8" />
+          <span className="hidden border-l border-mist pl-3 font-display text-lg font-semibold text-graphite sm:inline">Productonboarding</span>
         </Link>
 
         <nav aria-label="Hoofdnavigatie" className="hidden items-center gap-1 md:flex">
           {links}
-          <span className="ml-3 rounded-full bg-kyocera-red px-4 py-2 text-sm font-semibold" aria-label={`${passedCount} van ${total} quizzen gehaald`}>
+          <span className="ml-3 rounded-full bg-kyocera-red px-4 py-2 text-sm font-semibold text-white" aria-label={`${passedCount} van ${total} quizzen gehaald`}>
             {passedCount}/{total} gehaald
           </span>
         </nav>
@@ -53,7 +53,7 @@ export function Header() {
         <button
           ref={buttonRef}
           type="button"
-          className="inline-flex h-12 w-12 items-center justify-center rounded-lg hover:bg-white/10 md:hidden"
+          className="inline-flex h-12 w-12 items-center justify-center rounded-lg hover:bg-fog md:hidden"
           aria-expanded={open}
           aria-controls="mobiel-menu"
           aria-label={open ? 'Sluit menu' : 'Open menu'}
@@ -66,10 +66,10 @@ export function Header() {
       </div>
 
       {open && (
-        <nav id="mobiel-menu" aria-label="Hoofdnavigatie" onClick={() => setOpen(false)} className="animate-rise border-t border-white/15 md:hidden">
+        <nav id="mobiel-menu" aria-label="Hoofdnavigatie" onClick={() => setOpen(false)} className="animate-rise border-t border-mist md:hidden">
           <div className="container-page flex flex-col gap-1 py-3">
             {links}
-            <p className="px-4 py-3 text-white/85">{passedCount} van {total} quizzen gehaald</p>
+            <p className="px-4 py-3 text-graphite">{passedCount} van {total} quizzen gehaald</p>
           </div>
         </nav>
       )}

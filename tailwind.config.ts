@@ -11,9 +11,9 @@ export default {
       colors: {
         kyocera: {
           // Primaire merkkleur (Kyocera-rood). Wit op deze kleur haalt 4.5:1.
-          red: '#DC0032',
-          'red-dark': '#B8002A',
-          'red-soft': '#FDECEF',
+          red: '#E31A2F',
+          'red-dark': '#C2152A',
+          'red-soft': '#FCEBED',
         },
         ink: '#111111',
         graphite: '#3A3A3C',
