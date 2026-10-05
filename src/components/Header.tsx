@@ -6,7 +6,7 @@ import { isPassed } from '../lib/progress'
 import { Logo } from './Logo'
 
 const navClass = ({ isActive }: { isActive: boolean }) =>
-  `inline-flex min-h-12 items-center rounded-lg px-4 font-semibold transition-colors ${
+  `inline-flex min-h-12 items-center rounded-full px-4 font-semibold transition-colors ${
     isActive ? 'bg-fog text-ink' : 'text-graphite hover:bg-fog hover:text-ink'
   }`
 
@@ -36,9 +36,10 @@ export function Header() {
   )
 
   return (
-    <header className="sticky top-0 z-40 border-b border-mist border-t-4 border-t-kyocera-red bg-white text-ink">
-      <div className="container-page flex h-16 items-center justify-between gap-4">
-        <Link to="/" className="flex min-h-12 items-center gap-3 rounded-lg" aria-label="Kyocera productonboarding, naar overzicht">
+    <header className="pointer-events-none sticky top-0 z-40 px-3 pt-3 text-ink sm:px-6">
+      <div className="pointer-events-auto mx-auto max-w-6xl rounded-[1.75rem] border border-white/60 bg-white/80 shadow-[0_8px_30px_-12px_rgb(17_17_17/0.35),inset_0_1px_0_rgb(255_255_255/0.8)] ring-1 ring-ink/10 backdrop-blur-xl supports-[not(backdrop-filter)]:bg-white">
+      <div className="flex h-14 items-center justify-between gap-4 pl-5 pr-2 sm:pl-6">
+        <Link to="/" className="flex min-h-12 items-center gap-3 rounded-full" aria-label="Kyocera productonboarding, naar overzicht">
           <Logo className="h-8" />
           <span className="hidden border-l border-mist pl-3 font-display text-lg font-semibold text-graphite sm:inline">Productonboarding</span>
         </Link>
@@ -53,7 +54,7 @@ export function Header() {
         <button
           ref={buttonRef}
           type="button"
-          className="inline-flex h-12 w-12 items-center justify-center rounded-lg hover:bg-fog md:hidden"
+          className="inline-flex h-12 w-12 items-center justify-center rounded-full hover:bg-fog md:hidden"
           aria-expanded={open}
           aria-controls="mobiel-menu"
           aria-label={open ? 'Sluit menu' : 'Open menu'}
@@ -66,13 +67,14 @@ export function Header() {
       </div>
 
       {open && (
-        <nav id="mobiel-menu" aria-label="Hoofdnavigatie" onClick={() => setOpen(false)} className="animate-rise border-t border-mist md:hidden">
-          <div className="container-page flex flex-col gap-1 py-3">
+        <nav id="mobiel-menu" aria-label="Hoofdnavigatie" onClick={() => setOpen(false)} className="animate-rise border-t border-mist/70 md:hidden">
+          <div className="flex flex-col gap-1 p-3">
             {links}
             <p className="px-4 py-3 text-graphite">{passedCount} van {total} quizzen gehaald</p>
           </div>
         </nav>
       )}
+      </div>
     </header>
   )
 }

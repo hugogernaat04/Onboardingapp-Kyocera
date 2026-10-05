@@ -28,7 +28,7 @@ export default function Home() {
 
   return (
     <>
-      <section className="on-dark bg-ink text-white">
+      <section className="on-dark -mt-[4.25rem] bg-ink pt-[4.25rem] text-white">
         <div className="container-page grid gap-8 py-10 sm:py-14 lg:grid-cols-[1.4fr_1fr] lg:items-end lg:py-16">
           <div>
             <h1 className="max-w-[18ch] text-4xl text-white sm:text-5xl">
@@ -98,7 +98,7 @@ export default function Home() {
         {visible.length > 0 ? (
           <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {visible.map((p, i) => (
-              <ProductCard key={p.id} product={p} passed={isPassed(progress[p.id])} delay={Math.min(i, 7) * 40} />
+              <ProductCard key={p.id} product={p} passed={isPassed(progress[p.id])} delay={(i % 4) * 90} />
             ))}
           </ul>
         ) : (

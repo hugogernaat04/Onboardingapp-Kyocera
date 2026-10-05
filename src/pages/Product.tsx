@@ -1,4 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
+import { Reveal } from '../components/Reveal'
 import { ProductImage } from '../components/ProductImage'
 import { VideoPlayer } from '../components/VideoPlayer'
 import { getProduct, products } from '../data/products'
@@ -52,20 +53,20 @@ export default function Product() {
 
       <div className="container-page grid gap-10 py-8 lg:grid-cols-[3fr_2fr] lg:gap-14 lg:py-12">
         <div className="space-y-10">
-          <section aria-labelledby="omschrijving">
+          <Reveal as="section" labelledBy="omschrijving">
             <h2 id="omschrijving" className="text-2xl sm:text-3xl">Omschrijving</h2>
             <p className="prose-limit mt-3">{product.omschrijving}</p>
-          </section>
-          <section aria-labelledby="kenmerken">
+          </Reveal>
+          <Reveal as="section" labelledBy="kenmerken">
             <h2 id="kenmerken" className="text-2xl sm:text-3xl">Belangrijkste kenmerken</h2>
             <ul className="prose-limit mt-3 space-y-3">
               {product.kenmerken.map((k) => (<li key={k} className="flex gap-3"><Check /><span>{k}</span></li>))}
             </ul>
-          </section>
-          <section aria-labelledby="doelgroep">
+          </Reveal>
+          <Reveal as="section" labelledBy="doelgroep">
             <h2 id="doelgroep" className="text-2xl sm:text-3xl">Voor wie is dit geschikt?</h2>
             <p className="prose-limit mt-3">{product.doelgroep}</p>
-          </section>
+          </Reveal>
         </div>
 
         <aside className="h-fit rounded-2xl bg-ink p-6 text-white sm:p-8 lg:sticky lg:top-24" aria-labelledby="usp">
@@ -78,12 +79,12 @@ export default function Product() {
         </aside>
       </div>
 
-      <section id="video" className="container-page scroll-mt-20 pb-10" aria-labelledby="video-titel">
+      <Reveal as="section" id="video" className="container-page scroll-mt-20 pb-10" labelledBy="video-titel">
         <h2 id="video-titel" className="text-2xl sm:text-3xl">Uitlegvideo</h2>
         <div className="mt-4 max-w-4xl">
           <VideoPlayer source={product.video} title={product.naam} />
         </div>
-      </section>
+      </Reveal>
 
       <section className="container-page pb-10" aria-label="Klaar voor de quiz?">
         <div className="flex flex-col gap-4 rounded-2xl bg-kyocera-red-soft p-6 sm:p-8 md:flex-row md:items-center md:justify-between">
