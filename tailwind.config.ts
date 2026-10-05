@@ -27,6 +27,9 @@ export default {
         sans: ['"Geist Variable"', 'system-ui', 'sans-serif'],
         display: ['"Geist Variable"', 'system-ui', 'sans-serif'],
       },
+      transitionTimingFunction: {
+        DEFAULT: 'cubic-bezier(0.32, 0.72, 0, 1)',
+      },
       boxShadow: {
         card: '0 1px 2px rgb(17 17 17 / 0.06), 0 8px 24px -12px rgb(17 17 17 / 0.18)',
       },

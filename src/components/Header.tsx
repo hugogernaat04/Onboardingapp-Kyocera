@@ -28,12 +28,22 @@ export function Header() {
   }, [open])
 
   const next = products.find((p) => !isPassed(progress[p.id]))
-  const links = (
-    <>
-      <NavLink to="/" end className={navClass}>Overzicht</NavLink>
-      {next && <NavLink to={`/product/${next.id}`} className={navClass} end>Verder leren</NavLink>}
-    </>
-  )
+  const items = [
+    { to: '/', label: 'Overzicht' },
+    ...(next ? [{ to: `/product/${next.id}`, label: 'Verder leren' }] : []),
+  ]
+  const links = (stagger: boolean) =>
+    items.map((item, i) => (
+      <NavLink
+        key={item.to}
+        to={item.to}
+        end
+        className={(s) => `${navClass(s)} ${stagger ? 'animate-rise' : ''}`}
+        style={stagger ? { animationDelay: `${60 + i * 70}ms` } : undefined}
+      >
+        {item.label}
+      </NavLink>
+    ))
 
   return (
     <header className="pointer-events-none sticky top-0 z-40 px-3 pt-3 text-ink sm:px-6">
@@ -45,7 +55,7 @@ export function Header() {
         </Link>
 
         <nav aria-label="Hoofdnavigatie" className="hidden items-center gap-1 md:flex">
-          {links}
+          {links(false)}
           <span className="ml-3 rounded-full bg-kyocera-red px-4 py-2 text-sm font-semibold text-white" aria-label={`${passedCount} van ${total} quizzen gehaald`}>
             {passedCount}/{total} gehaald
           </span>
@@ -60,16 +70,18 @@ export function Header() {
           aria-label={open ? 'Sluit menu' : 'Open menu'}
           onClick={() => setOpen((o) => !o)}
         >
-          <svg aria-hidden="true" viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
-            {open ? <path d="M5 5l14 14M19 5L5 19" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
-          </svg>
+          <span aria-hidden="true" className="relative block h-6 w-6">
+            <span className={`absolute left-0.5 h-0.5 w-5 rounded-full bg-current transition-transform duration-500 top-[6px] ${open ? 'translate-y-[5px] rotate-45' : ''}`} />
+            <span className={`absolute left-0.5 top-[11px] h-0.5 w-5 rounded-full bg-current transition-opacity duration-300 ${open ? 'opacity-0' : 'opacity-100'}`} />
+            <span className={`absolute left-0.5 h-0.5 w-5 rounded-full bg-current transition-transform duration-500 top-[16px] ${open ? '-translate-y-[5px] -rotate-45' : ''}`} />
+          </span>
         </button>
       </div>
 
       {open && (
         <nav id="mobiel-menu" aria-label="Hoofdnavigatie" onClick={() => setOpen(false)} className="animate-rise border-t border-mist/70 md:hidden">
           <div className="flex flex-col gap-1 p-3">
-            {links}
+            {links(true)}
             <p className="px-4 py-3 text-graphite">{passedCount} van {total} quizzen gehaald</p>
           </div>
         </nav>

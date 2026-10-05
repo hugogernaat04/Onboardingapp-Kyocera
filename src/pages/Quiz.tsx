@@ -5,6 +5,7 @@ import { useProgress } from '../hooks/useProgress'
 import { PASS_SCORE } from '../lib/progress'
 import { initialQuizState, prepareQuestions, quizReducer, resultMessage } from '../lib/quiz'
 import { ChevronLeftIcon, CheckIcon, CrossIcon } from '../components/Icons'
+import { CtaButton } from '../components/Cta'
 import NotFound from './NotFound'
 
 export default function Quiz() {
@@ -122,9 +123,9 @@ function QuizRunner({ product, onRetry }: { product: Product; onRetry: () => voi
       </div>
 
       {answered && (
-        <button ref={nextRef} type="button" className="btn-primary mt-5 w-full sm:w-auto" onClick={() => dispatch({ type: 'next', total })}>
+        <CtaButton buttonRef={nextRef} className="mt-5 w-full justify-between sm:w-auto sm:justify-center" onClick={() => dispatch({ type: 'next', total })}>
           {isLast ? 'Bekijk resultaat' : 'Volgende vraag'}
-        </button>
+        </CtaButton>
       )}
     </div>
   )

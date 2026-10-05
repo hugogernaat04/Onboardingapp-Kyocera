@@ -1,4 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
+import { CtaLink } from '../components/Cta'
 import { Reveal } from '../components/Reveal'
 import { ProductImage } from '../components/ProductImage'
 import { VideoPlayer } from '../components/VideoPlayer'
@@ -45,7 +46,7 @@ export default function Product() {
             </p>
           )}
           <div className="mt-6 hidden gap-3 md:flex">
-            <Link to={`/product/${product.id}/quiz`} className="btn-primary">Start de quiz</Link>
+            <CtaLink to={`/product/${product.id}/quiz`}>Start de quiz</CtaLink>
             <a href="#video" className="btn-secondary">Bekijk de video</a>
           </div>
         </div>
@@ -92,7 +93,7 @@ export default function Product() {
             <h2 className="text-2xl">Klaar voor de quiz?</h2>
             <p className="mt-1 text-graphite">5 vragen. Je haalt de quiz met minimaal {PASS_SCORE} goede antwoorden.</p>
           </div>
-          <Link to={`/product/${product.id}/quiz`} className="btn-primary">Start de quiz</Link>
+          <CtaLink to={`/product/${product.id}/quiz`}>Start de quiz</CtaLink>
         </div>
       </section>
 
@@ -112,7 +113,7 @@ export default function Product() {
       </nav>
 
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-mist bg-white/95 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur md:hidden">
-        <Link to={`/product/${product.id}/quiz`} className="btn-primary w-full">Start de quiz</Link>
+        <CtaLink to={`/product/${product.id}/quiz`} className="w-full justify-between">Start de quiz</CtaLink>
       </div>
     </article>
   )
