@@ -77,7 +77,7 @@ Het Kyocera-logo staat al in **`public/brand/kyocera-logo.svg`** (afkomstig van 
 
 ## Huisstijl aanpassen
 
-Kleuren en lettertypen staan als design tokens in [`tailwind.config.ts`](tailwind.config.ts). Het primaire Kyocera-rood is `kyocera.red`. De hexwaarde (`#E31A2F`) komt uit het logobestand; controleer hem aan de hand van de officiële huisstijlgids.
+Kleuren en lettertypen (Geist, lokaal meegeleverd via `@fontsource-variable/geist`) staan als design tokens in [`tailwind.config.ts`](tailwind.config.ts). Het primaire Kyocera-rood is `kyocera.red`. De hexwaarde (`#E31A2F`) komt uit het logobestand; controleer hem aan de hand van de officiële huisstijlgids.
 
 ## Mappenstructuur
 

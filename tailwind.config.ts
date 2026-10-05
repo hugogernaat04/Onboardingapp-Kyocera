@@ -24,8 +24,8 @@ export default {
         danger: { DEFAULT: '#B3261E', soft: '#FCE9E8' },
       },
       fontFamily: {
-        sans: ['Barlow', 'system-ui', 'sans-serif'],
-        display: ['"Barlow Semi Condensed"', 'Barlow', 'system-ui', 'sans-serif'],
+        sans: ['"Geist Variable"', 'system-ui', 'sans-serif'],
+        display: ['"Geist Variable"', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
         card: '0 1px 2px rgb(17 17 17 / 0.06), 0 8px 24px -12px rgb(17 17 17 / 0.18)',

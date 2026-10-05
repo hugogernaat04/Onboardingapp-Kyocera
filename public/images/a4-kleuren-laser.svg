@@ -13,5 +13,5 @@
   <rect x="260" y="262" width="80" height="36" rx="4" fill="#E31A2F"/>
   <rect x="245" y="380" width="350" height="50" rx="6" fill="#ECECEE" stroke="#B9B9BD" stroke-width="2"/>
   <rect x="300" y="340" width="240" height="14" fill="#fff" stroke="#B9B9BD" stroke-width="2"/>
-  <text x="56" y="96" font-family="Barlow Semi Condensed, Arial, sans-serif" font-size="48" font-weight="700" fill="#111">KX-PA3500cx</text>
+  <text x="56" y="96" font-family="Geist, Arial, sans-serif" font-size="48" font-weight="600" fill="#111">KX-PA3500cx</text>
 </svg>

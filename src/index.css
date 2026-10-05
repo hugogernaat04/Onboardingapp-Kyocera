@@ -1,8 +1,4 @@
-@import '@fontsource/barlow/400.css';
-@import '@fontsource/barlow/500.css';
-@import '@fontsource/barlow/600.css';
-@import '@fontsource/barlow-semi-condensed/600.css';
-@import '@fontsource/barlow-semi-condensed/700.css';
+@import '@fontsource-variable/geist';
 
 @tailwind base;
 @tailwind components;
@@ -14,11 +10,11 @@
     scroll-padding-top: 5rem;
   }
   body {
-    @apply bg-white font-sans text-[1.0625rem] leading-relaxed text-ink antialiased;
+    @apply bg-white font-sans text-base leading-relaxed text-ink antialiased;
     overflow-wrap: break-word;
   }
   h1, h2, h3 {
-    @apply font-display font-bold tracking-tight text-ink;
+    @apply font-display font-semibold tracking-tight text-ink;
     text-wrap: balance;
   }
   :focus-visible {

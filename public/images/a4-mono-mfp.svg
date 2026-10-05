@@ -15,5 +15,5 @@
   <rect x="235" y="418" width="370" height="6" fill="#B9B9BD"/>
   <rect x="560" y="305" width="48" height="10" rx="5" fill="#E31A2F"/>
   <rect x="350" y="330" width="130" height="14" fill="#fff" stroke="#B9B9BD" stroke-width="2"/>
-  <text x="56" y="96" font-family="Barlow Semi Condensed, Arial, sans-serif" font-size="48" font-weight="700" fill="#111">KX-MA4500x</text>
+  <text x="56" y="96" font-family="Geist, Arial, sans-serif" font-size="48" font-weight="600" fill="#111">KX-MA4500x</text>
 </svg>

@@ -14,7 +14,7 @@ const frame = (name, _cat, art) => `<svg xmlns="http://www.w3.org/2000/svg" view
   <rect x="0" y="0" width="14" height="${H}" fill="${RED}"/>
   <ellipse cx="420" cy="470" rx="250" ry="22" fill="#111" opacity=".12"/>
   ${art}
-  <text x="56" y="96" font-family="Barlow Semi Condensed, Arial, sans-serif" font-size="48" font-weight="700" fill="#111">${name}</text>
+  <text x="56" y="96" font-family="Geist, Arial, sans-serif" font-size="48" font-weight="600" fill="#111">${name}</text>
 </svg>
 `
 
