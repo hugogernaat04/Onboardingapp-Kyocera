@@ -1,0 +1,61 @@
+@import '@fontsource/barlow/400.css';
+@import '@fontsource/barlow/500.css';
+@import '@fontsource/barlow/600.css';
+@import '@fontsource/barlow-semi-condensed/600.css';
+@import '@fontsource/barlow-semi-condensed/700.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    @apply bg-white font-sans text-[1.0625rem] leading-relaxed text-ink antialiased;
+    overflow-wrap: break-word;
+  }
+  h1, h2, h3 {
+    @apply font-display font-bold tracking-tight text-ink;
+    text-wrap: balance;
+  }
+  :focus-visible {
+    @apply outline outline-[3px] outline-offset-2 outline-ink;
+  }
+  .on-dark :focus-visible {
+    @apply outline-white;
+  }
+  img, video, svg { max-width: 100%; }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+  .btn {
+    @apply inline-flex min-h-12 min-w-12 items-center justify-center gap-2 rounded-lg px-5 py-3 text-base font-semibold transition-colors duration-150;
+  }
+  .btn-primary {
+    @apply btn bg-kyocera-red text-white hover:bg-kyocera-red-dark active:bg-kyocera-red-dark;
+  }
+  .btn-secondary {
+    @apply btn border-2 border-ink bg-white text-ink hover:bg-ink hover:text-white;
+  }
+  .btn-ghost {
+    @apply btn text-graphite hover:bg-fog;
+  }
+  .prose-limit {
+    @apply max-w-[68ch];
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
