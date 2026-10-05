@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom'
-import type { Product } from '../data/products'
+import type { LocalizedProduct } from '../data/products'
+import { useLanguage } from '../hooks/useLanguage'
 import { Reveal } from './Reveal'
 import { CheckIcon } from './Icons'
 import { ProductImage } from './ProductImage'
 
-export function ProductCard({ product, passed, delay = 0 }: { product: Product; passed: boolean; delay?: number }) {
+export function ProductCard({ product, passed, delay = 0 }: { product: LocalizedProduct; passed: boolean; delay?: number }) {
+  const { t } = useLanguage()
   return (
     <Reveal as="li" delay={delay}>
       <Link
@@ -21,7 +23,7 @@ export function ProductCard({ product, passed, delay = 0 }: { product: Product; 
           {passed && (
             <span className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-success px-3 py-1.5 text-sm font-semibold text-white shadow animate-pop">
               <CheckIcon className="h-4 w-4" />
-              Quiz gehaald
+              {t('card.passed')}
             </span>
           )}
         </div>

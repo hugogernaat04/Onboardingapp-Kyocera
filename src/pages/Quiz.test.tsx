@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { ProgressProvider } from '../context/ProgressProvider'
+import { LanguageProvider } from '../i18n/LanguageProvider'
 import { products } from '../data/products'
 import { loadProgress } from '../lib/progress'
 import Quiz from './Quiz'
@@ -11,11 +12,11 @@ const product = products[0]
 
 function setup() {
   return render(
-    <ProgressProvider>
+    <LanguageProvider><ProgressProvider>
       <MemoryRouter initialEntries={[`/product/${product.id}/quiz`]}>
         <Routes><Route path="product/:id/quiz" element={<Quiz />} /></Routes>
       </MemoryRouter>
-    </ProgressProvider>,
+    </ProgressProvider></LanguageProvider>,
   )
 }
 

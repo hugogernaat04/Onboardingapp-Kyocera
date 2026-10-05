@@ -20,8 +20,17 @@
  *   - een YouTube-link:   "https://www.youtube.com/watch?v=XXXXXXXXXXX"
  *   - een eigen mp4:      "mijn-video.mp4" (bestand in public/videos/)
  *
+ * Talen: de hoofdtekst staat in het Nederlands. Elk product heeft een blok `en`
+ * met de Engelse vertaling van alle teksten (zelfde volgorde bij kenmerken,
+ * opties en vragen; `juisteAntwoord` wordt van het Nederlandse origineel overgenomen).
+ * Ontbreekt `en`, dan toont de site voor dat product de Nederlandse tekst.
+ * Een taal toevoegen: zie ook src/i18n/translations.ts.
+ *
  * Alle productnamen en -teksten hieronder zijn fictieve placeholders.
  */
+
+export const talen = ['nl', 'en'] as const
+export type Taal = (typeof talen)[number]
 
 export interface QuizQuestion {
   vraag: string
@@ -30,6 +39,23 @@ export interface QuizQuestion {
   /** Index (0-3) van de juiste optie */
   juisteAntwoord: number
   uitleg: string
+}
+
+/** Vertaalbare tekst van één quizvraag (het juiste antwoord staat bij de Nederlandse vraag). */
+export interface QuizQuestionText {
+  vraag: string
+  opties: string[]
+  uitleg: string
+}
+
+export interface ProductTranslation {
+  categorie: string
+  korteOmschrijving: string
+  omschrijving: string
+  kenmerken: string[]
+  doelgroep: string
+  verkoopargumenten: string[]
+  quiz: QuizQuestionText[]
 }
 
 export interface Product {
@@ -46,6 +72,23 @@ export interface Product {
   /** YouTube-link, mp4-bestandsnaam in public/videos/, of "" */
   video: string
   quiz: QuizQuestion[]
+  /** Engelse vertaling van alle teksten hierboven */
+  en?: ProductTranslation
+}
+
+/** Een product in één taal, klaar om te tonen. `categorieId` is de vaste (Nederlandse) sleutel voor het filter. */
+export type LocalizedProduct = Omit<Product, 'en'> & { categorieId: string }
+
+export function localizeProduct(product: Product, taal: Taal): LocalizedProduct {
+  const { en, ...base } = product
+  const tekst = taal === 'en' ? en : undefined
+  if (!tekst) return { ...base, categorieId: product.categorie }
+  return {
+    ...base,
+    ...tekst,
+    categorieId: product.categorie,
+    quiz: product.quiz.map((q, i) => ({ ...q, ...tekst.quiz[i] })),
+  }
 }
 
 /** Gedeelde dummy-video voor alle producten (vervang per product door een eigen video). */
@@ -76,6 +119,77 @@ export const products: Product[] = [
     ],
     afbeelding: 'a3-kleuren-mfp.svg',
     video: DUMMY_VIDEO,
+    en: {
+      "categorie": "Multifunctionals",
+      "korteOmschrijving": "Fast A3 colour MFP for busy workgroups.",
+      "omschrijving": "The KX-5500ci is an A3 colour multifunctional that combines printing, copying, scanning and faxing in one compact system. Thanks to the large touchscreen and fast processing, it is designed for workgroups that handle many documents every day.",
+      "kenmerken": [
+        "Print speed of up to 55 pages per minute in colour and black and white",
+        "10.1-inch touchscreen with app-like operation",
+        "Duplex and dual-sided automatic document feeder as standard",
+        "Paper capacity expandable to 7,150 sheets",
+        "Secure printing with PIN code and card reader"
+      ],
+      "doelgroep": "Medium to large offices, departments and workgroups of 15 to 50 users with a high and varied print volume.",
+      "verkoopargumenten": [
+        "Low total cost per page thanks to long-life parts",
+        "Less downtime thanks to the long life of the drum and developer",
+        "Easy to connect to existing document workflows",
+        "Strong security for sensitive documents"
+      ],
+      "quiz": [
+        {
+          "vraag": "Which paper size does the KX-5500ci handle?",
+          "opties": [
+            "A4 only",
+            "A3 and smaller",
+            "A5 only",
+            "Paper rolls only"
+          ],
+          "uitleg": "It is an A3 system and therefore also handles A4 and smaller sizes."
+        },
+        {
+          "vraag": "What is the maximum print speed of the KX-5500ci?",
+          "opties": [
+            "25 ppm",
+            "40 ppm",
+            "55 ppm",
+            "90 ppm"
+          ],
+          "uitleg": "The KX-5500ci prints up to 55 pages per minute, in both colour and black and white."
+        },
+        {
+          "vraag": "Which customer is this product best suited for?",
+          "opties": [
+            "Home user with a few pages a week",
+            "Workgroup of 15 to 50 users",
+            "Print shop with runs of thousands of copies",
+            "Anyone who only wants to print photos"
+          ],
+          "uitleg": "The KX-5500ci is built for workgroups with a high and varied volume."
+        },
+        {
+          "vraag": "How can a user print confidential documents securely?",
+          "opties": [
+            "With a PIN code or card reader",
+            "That is not possible",
+            "Only by fax",
+            "With a USB stick from the supplier"
+          ],
+          "uitleg": "Secure printing with a PIN code or card reader holds documents in the queue until the user identifies themselves."
+        },
+        {
+          "vraag": "Which selling point fits the long life of the parts?",
+          "opties": [
+            "Higher purchase price",
+            "Lower cost per page",
+            "More paper jams",
+            "Higher energy use"
+          ],
+          "uitleg": "Long-life parts mean fewer replacements and therefore a lower cost per page."
+        }
+      ]
+    },
     quiz: [
       {
         vraag: 'Welk papierformaat verwerkt de KX-5500ci?',
@@ -137,6 +251,77 @@ export const products: Product[] = [
     ],
     afbeelding: 'a4-mono-mfp.svg',
     video: DUMMY_VIDEO,
+    en: {
+      "categorie": "Multifunctionals",
+      "korteOmschrijving": "Compact A4 black-and-white MFP for small teams.",
+      "omschrijving": "The KX-MA4500x is a compact A4 black-and-white multifunctional for small teams and front desks. It combines fast printing and scanning with affordable toner and simple operation.",
+      "kenmerken": [
+        "Print speed of up to 45 pages per minute",
+        "Duplex printing and scanning as standard",
+        "Toner for up to 20,000 pages",
+        "Wi-Fi, Ethernet and mobile printing",
+        "Compact housing only 40 cm wide"
+      ],
+      "doelgroep": "Small offices, practices, shops and departments of 3 to 10 users.",
+      "verkoopargumenten": [
+        "Affordable to buy and very low running costs",
+        "Fits on any desk or front desk",
+        "Quick setup without an IT specialist",
+        "Economical on standby thanks to energy-saving mode"
+      ],
+      "quiz": [
+        {
+          "vraag": "Which colour range does the KX-MA4500x print?",
+          "opties": [
+            "Full colour",
+            "Black and white only",
+            "Blue only",
+            "Greyscale with red only"
+          ],
+          "uitleg": "The \"M\" stands for mono: this model prints in black and white only."
+        },
+        {
+          "vraag": "How many pages does the supplied toner last?",
+          "opties": [
+            "Up to 2,000",
+            "Up to 5,000",
+            "Up to 20,000",
+            "Up to 200,000"
+          ],
+          "uitleg": "The toner lasts up to 20,000 pages, which keeps the cost per page low."
+        },
+        {
+          "vraag": "Which team is this model best suited for?",
+          "opties": [
+            "3 to 10 users",
+            "200 users",
+            "A print shop",
+            "A graphic design agency"
+          ],
+          "uitleg": "The compact MFP is made for small teams and front desks."
+        },
+        {
+          "vraag": "Which connection is NOT mentioned for the KX-MA4500x?",
+          "opties": [
+            "Wi-Fi",
+            "Ethernet",
+            "Mobile printing",
+            "Connection to an offset press"
+          ],
+          "uitleg": "Connecting to an offset press does not belong with an office MFP; the other options do."
+        },
+        {
+          "vraag": "What is a strong selling point for small offices?",
+          "opties": [
+            "Fits on any desk",
+            "Needs its own server room",
+            "Only works with special paper",
+            "Requires a dedicated IT administrator"
+          ],
+          "uitleg": "The compact size and simple installation make it ideal for small offices."
+        }
+      ]
+    },
     quiz: [
       {
         vraag: 'Welk kleurenbereik print de KX-MA4500x?',
@@ -193,6 +378,77 @@ export const products: Product[] = [
     ],
     afbeelding: 'a4-kleuren-laser.svg',
     video: DUMMY_VIDEO,
+    en: {
+      "categorie": "Laser printers",
+      "korteOmschrijving": "A4 colour laser printer with sharp output and low costs.",
+      "omschrijving": "The KX-PA3500cx is a reliable A4 colour laser printer for offices that want professional-looking documents without high costs. It delivers vivid colours and sharp text.",
+      "kenmerken": [
+        "Up to 35 pages per minute in colour",
+        "Resolution 1200 x 1200 dpi",
+        "Automatic duplex printing",
+        "500-sheet paper tray, expandable to 1,600 sheets",
+        "First page ready in under 6 seconds"
+      ],
+      "doelgroep": "Offices, schools and healthcare organisations that print many presentations, letters and reports in colour.",
+      "verkoopargumenten": [
+        "Professional colour quality at a low price per page",
+        "Reliable at high volumes",
+        "Easy management via a web browser",
+        "Compact size with plenty of paper capacity"
+      ],
+      "quiz": [
+        {
+          "vraag": "What type of printer is the KX-PA3500cx?",
+          "opties": [
+            "Inkjet printer",
+            "Colour laser printer",
+            "Dot matrix printer",
+            "Thermal label printer"
+          ],
+          "uitleg": "It is an A4 colour laser printer."
+        },
+        {
+          "vraag": "What is the resolution of the KX-PA3500cx?",
+          "opties": [
+            "300 dpi",
+            "600 dpi",
+            "1200 x 1200 dpi",
+            "4800 x 4800 dpi"
+          ],
+          "uitleg": "At 1200 x 1200 dpi it delivers sharp text and detailed images."
+        },
+        {
+          "vraag": "How many sheets fit in the expanded paper capacity?",
+          "opties": [
+            "250",
+            "500",
+            "1,600",
+            "10,000"
+          ],
+          "uitleg": "The standard tray holds 500 sheets; expanded it can reach 1,600 sheets."
+        },
+        {
+          "vraag": "Which customer fits this model best?",
+          "opties": [
+            "A school that prints many colour documents",
+            "A newspaper printer",
+            "An architect with A0 drawings",
+            "Someone who only prints labels"
+          ],
+          "uitleg": "Schools, offices and healthcare organisations with many colour documents are the core target group."
+        },
+        {
+          "vraag": "How does an IT administrator manage this device easily?",
+          "opties": [
+            "Via a web browser",
+            "Only with a special cable",
+            "Only on site with a key",
+            "That is not possible"
+          ],
+          "uitleg": "Management runs through the built-in web interface in the browser."
+        }
+      ]
+    },
     quiz: [
       {
         vraag: 'Welk type printer is de KX-PA3500cx?',
@@ -249,6 +505,77 @@ export const products: Product[] = [
     ],
     afbeelding: 'a4-mono-laser.svg',
     video: DUMMY_VIDEO,
+    en: {
+      "categorie": "Laser printers",
+      "korteOmschrijving": "Fast and robust black-and-white laser printer for high volumes.",
+      "omschrijving": "The KX-PA5000x is a robust A4 black-and-white laser printer for intensive use. It is built to reliably process large quantities of documents for years at minimal cost.",
+      "kenmerken": [
+        "Up to 50 pages per minute",
+        "Monthly capacity of up to 200,000 pages",
+        "Duplex as standard",
+        "Long drum life",
+        "Supports direct PDF printing via USB"
+      ],
+      "doelgroep": "Administrative departments, call centres and companies with many standard black-and-white documents.",
+      "verkoopargumenten": [
+        "Very low cost per page",
+        "Proven reliability at high volumes",
+        "Little maintenance needed",
+        "Also suited for secure printing in larger organisations"
+      ],
+      "quiz": [
+        {
+          "vraag": "What is the maximum speed of the KX-PA5000x?",
+          "opties": [
+            "20 ppm",
+            "35 ppm",
+            "50 ppm",
+            "120 ppm"
+          ],
+          "uitleg": "The printer reaches up to 50 pages per minute."
+        },
+        {
+          "vraag": "What is its maximum monthly capacity?",
+          "opties": [
+            "Up to 2,000 pages",
+            "Up to 20,000 pages",
+            "Up to 200,000 pages",
+            "Unlimited"
+          ],
+          "uitleg": "The maximum monthly capacity is 200,000 pages."
+        },
+        {
+          "vraag": "Which selling point fits this model best?",
+          "opties": [
+            "Very low cost per page",
+            "Gallery-quality photo prints",
+            "Printing on textiles",
+            "3D printing"
+          ],
+          "uitleg": "At high volumes, a low cost per page is the strongest argument."
+        },
+        {
+          "vraag": "Which customer is this most suitable for?",
+          "opties": [
+            "A call centre with many black-and-white documents",
+            "A photographer",
+            "A home user",
+            "A poster design studio"
+          ],
+          "uitleg": "Administrative departments and call centres print a lot of standard work in black and white."
+        },
+        {
+          "vraag": "How can you print a PDF directly without a computer?",
+          "opties": [
+            "Via a USB stick",
+            "Via a cassette",
+            "That is not possible",
+            "Via a floppy disk"
+          ],
+          "uitleg": "Direct PDF printing via USB is supported as standard."
+        }
+      ]
+    },
     quiz: [
       {
         vraag: 'Wat is de maximale snelheid van de KX-PA5000x?',
@@ -305,6 +632,77 @@ export const products: Product[] = [
     ],
     afbeelding: 'productieprinter.svg',
     video: DUMMY_VIDEO,
+    en: {
+      "categorie": "Production printers",
+      "korteOmschrijving": "Colour production printer for in-house print work.",
+      "omschrijving": "The KX-Pro 15000c is a colour production printer for in-house print work and small print shops. It delivers consistent colour quality on a wide range of paper types and sizes, including heavy paper.",
+      "kenmerken": [
+        "Up to 150 pages per minute",
+        "Paper weight up to 400 g/m²",
+        "Inline finishing: stapling, folding and booklet making",
+        "Automatic colour calibration",
+        "Banners up to 1,260 mm long"
+      ],
+      "doelgroep": "Print shops, reprographic centres and large organisations that produce brochures, mailings and reports themselves.",
+      "verkoopargumenten": [
+        "Produce print work yourself instead of outsourcing",
+        "Consistent colour without manual adjustment",
+        "Many finishing options in one workflow",
+        "Short turnaround for small runs"
+      ],
+      "quiz": [
+        {
+          "vraag": "What is the heaviest paper the KX-Pro 15000c can handle?",
+          "opties": [
+            "80 g/m²",
+            "120 g/m²",
+            "250 g/m²",
+            "400 g/m²"
+          ],
+          "uitleg": "The system handles paper up to 400 g/m², useful for covers and cards."
+        },
+        {
+          "vraag": "Which finishing can be added inline?",
+          "opties": [
+            "Stapling and folding",
+            "Leather binding",
+            "3D lamination",
+            "None"
+          ],
+          "uitleg": "Inline finishing includes stapling, folding and booklet making."
+        },
+        {
+          "vraag": "What is an important selling point towards a print shop?",
+          "opties": [
+            "Consistent colour quality through automatic calibration",
+            "Printing on glass",
+            "Never needs maintenance",
+            "Only works with A5"
+          ],
+          "uitleg": "Automatic colour calibration ensures consistent colour without manual corrections."
+        },
+        {
+          "vraag": "What is the maximum speed?",
+          "opties": [
+            "15 ppm",
+            "50 ppm",
+            "150 ppm",
+            "1,500 ppm"
+          ],
+          "uitleg": "The KX-Pro 15000c prints up to 150 pages per minute."
+        },
+        {
+          "vraag": "Which customer fits this product best?",
+          "opties": [
+            "A reprographic centre",
+            "A sole trader with 2 pages a day",
+            "A home worker",
+            "A kiosk that only prints receipts"
+          ],
+          "uitleg": "Reprographic centres, print shops and large organisations with a lot of print work are the target group."
+        }
+      ]
+    },
     quiz: [
       {
         vraag: 'Wat is het zwaarste papier dat de KX-Pro 15000c aankan?',
@@ -361,6 +759,77 @@ export const products: Product[] = [
     ],
     afbeelding: 'grootformaat-printer.svg',
     video: DUMMY_VIDEO,
+    en: {
+      "categorie": "Production printers",
+      "korteOmschrijving": "Large-format printer for drawings and posters.",
+      "omschrijving": "The KX-Wide 7000 is a large-format printer for technical drawings, floor plans and posters. It prints up to 36 inches wide with sharp lines and a fast first print.",
+      "kenmerken": [
+        "Print width up to 36 inches (914 mm)",
+        "A1 drawing in 25 seconds",
+        "Two rolls with automatic switching",
+        "Integrated scanner optional",
+        "Cloud printing from laptop and tablet"
+      ],
+      "doelgroep": "Architects, engineering firms, construction companies and municipalities that regularly print large drawings.",
+      "verkoopargumenten": [
+        "Sharp lines, even in small details",
+        "Drawings straight at the building site or office",
+        "Savings on outsourced plotting",
+        "Easy sharing from the cloud"
+      ],
+      "quiz": [
+        {
+          "vraag": "How wide can the KX-Wide 7000 print at most?",
+          "opties": [
+            "A4",
+            "A3",
+            "24 inch",
+            "36 inch"
+          ],
+          "uitleg": "The maximum print width is 36 inches (914 mm)."
+        },
+        {
+          "vraag": "Who is the typical customer?",
+          "opties": [
+            "An architecture firm",
+            "A primary school for worksheets",
+            "A coffee shop",
+            "A home user"
+          ],
+          "uitleg": "Architects and engineering firms regularly print large drawings."
+        },
+        {
+          "vraag": "What is the optional integrated scanner for?",
+          "opties": [
+            "Digitising large drawings",
+            "Taking photos of people",
+            "Printing stickers",
+            "Nothing"
+          ],
+          "uitleg": "With the scanner you digitise large paper drawings."
+        },
+        {
+          "vraag": "What is an important advantage of the two rolls?",
+          "opties": [
+            "Automatic switching between paper types",
+            "Double energy costs",
+            "Colour prints only",
+            "Less speed"
+          ],
+          "uitleg": "The printer switches automatically between rolls, so no manual work is needed."
+        },
+        {
+          "vraag": "Which argument fits outsourced plotting?",
+          "opties": [
+            "Savings by printing in-house",
+            "Higher costs",
+            "Longer delivery time",
+            "Less control"
+          ],
+          "uitleg": "Printing in-house saves costs and delivery time compared with outsourcing."
+        }
+      ]
+    },
     quiz: [
       {
         vraag: 'Hoe breed kan de KX-Wide 7000 maximaal printen?',
@@ -417,6 +886,77 @@ export const products: Product[] = [
     ],
     afbeelding: 'document-capture.svg',
     video: DUMMY_VIDEO,
+    en: {
+      "categorie": "Document management",
+      "korteOmschrijving": "Software that automatically digitises and sorts paper documents.",
+      "omschrijving": "KX Capture Cloud scans paper documents, recognises their content and automatically sends them to the right folder or system. This removes manual sorting and retyping.",
+      "kenmerken": [
+        "Text recognition (OCR) in more than 40 languages",
+        "Automatic indexing based on content",
+        "Integrations with common accounting systems",
+        "Scan directly from the MFP screen",
+        "Encrypted storage in European data centres"
+      ],
+      "doelgroep": "Administrative departments, accounting firms, municipalities and healthcare organisations with a lot of paper mail.",
+      "verkoopargumenten": [
+        "Less manual work and fewer errors",
+        "Find documents faster",
+        "Meets GDPR requirements with European storage",
+        "Works directly with existing Kyocera MFPs"
+      ],
+      "quiz": [
+        {
+          "vraag": "What does OCR do in KX Capture Cloud?",
+          "opties": [
+            "Recognises text in scanned documents",
+            "Prints documents faster",
+            "Removes viruses",
+            "Makes paper"
+          ],
+          "uitleg": "OCR (optical character recognition) converts scanned images into searchable text."
+        },
+        {
+          "vraag": "Where are documents stored?",
+          "opties": [
+            "In European data centres",
+            "On a USB stick",
+            "On the MFP itself, unencrypted",
+            "Nowhere"
+          ],
+          "uitleg": "Storage is encrypted in European data centres, which helps with GDPR compliance."
+        },
+        {
+          "vraag": "Which customer benefits most from this software?",
+          "opties": [
+            "An accounting firm with a lot of paper mail",
+            "A photographer",
+            "A garden centre without administration",
+            "A bakery"
+          ],
+          "uitleg": "Organisations with a lot of paper mail gain the most from automatic indexing."
+        },
+        {
+          "vraag": "How does a user start a scan?",
+          "opties": [
+            "Directly on the MFP screen",
+            "Only by fax",
+            "Only via a special scanner from another brand",
+            "That is not possible"
+          ],
+          "uitleg": "Scanning can be done directly from the screen of a Kyocera MFP."
+        },
+        {
+          "vraag": "What is an important selling point?",
+          "opties": [
+            "Less manual work and fewer errors",
+            "More paper needed",
+            "Longer search time",
+            "Higher printing costs"
+          ],
+          "uitleg": "Automatic sorting and indexing saves time and prevents typing errors."
+        }
+      ]
+    },
     quiz: [
       {
         vraag: 'Wat doet OCR in KX Capture Cloud?',
@@ -473,6 +1013,77 @@ export const products: Product[] = [
     ],
     afbeelding: 'fleet-manager.svg',
     video: DUMMY_VIDEO,
+    en: {
+      "categorie": "Document management",
+      "korteOmschrijving": "Manage and monitor all your printers and MFPs from one dashboard.",
+      "omschrijving": "KX Fleet Manager gives IT administrators a single overview of all printers and MFPs in the organisation: status, toner level, usage and costs. Faults are reported early and toner can be reordered automatically.",
+      "kenmerken": [
+        "One dashboard for all devices, across multiple locations",
+        "Automatic alerts for faults or low toner",
+        "Reporting on usage and costs per department",
+        "Set policy centrally, such as duplex by default",
+        "Works with devices from different brands"
+      ],
+      "doelgroep": "IT departments and facility managers of organisations with multiple printers and locations.",
+      "verkoopargumenten": [
+        "Insight into and control over print costs",
+        "Fewer faults and fewer service technician visits",
+        "Less work for the IT department",
+        "More sustainable printing through targeted policy"
+      ],
+      "quiz": [
+        {
+          "vraag": "What does the KX Fleet Manager dashboard show?",
+          "opties": [
+            "Status, toner level, usage and costs",
+            "Only the weather",
+            "Only the paper type",
+            "Nothing"
+          ],
+          "uitleg": "The dashboard gives a complete overview of status, toner, usage and costs."
+        },
+        {
+          "vraag": "What happens when toner is low?",
+          "opties": [
+            "An automatic alert is sent",
+            "The printer stops without notice",
+            "Nothing",
+            "The printer is removed"
+          ],
+          "uitleg": "Alerts for low toner or faults prevent unexpected downtime."
+        },
+        {
+          "vraag": "Who is this software mainly intended for?",
+          "opties": [
+            "IT departments with multiple printers",
+            "Home users with one printer",
+            "Photographers",
+            "Students"
+          ],
+          "uitleg": "The product is designed for organisations with multiple devices and locations."
+        },
+        {
+          "vraag": "Which devices does KX Fleet Manager work with?",
+          "opties": [
+            "Other brands too",
+            "Only one model number",
+            "Only fax machines",
+            "Only copy paper"
+          ],
+          "uitleg": "The software supports devices from different brands in one environment."
+        },
+        {
+          "vraag": "Which argument fits facility managers?",
+          "opties": [
+            "Insight into and control over print costs",
+            "Using more paper",
+            "Higher energy costs",
+            "Less overview"
+          ],
+          "uitleg": "Reporting per department gives facility managers a grip on costs."
+        }
+      ]
+    },
     quiz: [
       {
         vraag: 'Wat toont het dashboard van KX Fleet Manager?',
@@ -508,7 +1119,5 @@ export const products: Product[] = [
   },
 ]
 
-export const getProduct = (id: string | undefined): Product | undefined =>
-  products.find((p) => p.id === id)
-
+/** Alle categorieën in de oorspronkelijke (Nederlandse) schrijfwijze. */
 export const categories: string[] = Array.from(new Set(products.map((p) => p.categorie)))

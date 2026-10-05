@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { products } from '../data/products'
-import { initialQuizState, prepareQuestions, quizReducer, resultMessage } from './quiz'
+import { initialQuizState, prepareQuestions, quizReducer, resultLevel } from './quiz'
 
 describe('productdata', () => {
   it('heeft per product 5 vragen met 4 opties en een geldig juist antwoord', () => {
@@ -59,11 +59,11 @@ describe('quizReducer', () => {
   })
 })
 
-describe('resultMessage', () => {
-  it('geeft een bericht afhankelijk van de score', () => {
-    expect(resultMessage(5, 5).titel).toBe('Perfect!')
-    expect(resultMessage(4, 5).titel).toBe('Gehaald!')
-    expect(resultMessage(3, 5).titel).toBe('Bijna!')
-    expect(resultMessage(1, 5).titel).toBe('Nog niet gehaald')
+describe('resultLevel', () => {
+  it('kiest een niveau afhankelijk van de score', () => {
+    expect(resultLevel(5, 5)).toBe('perfect')
+    expect(resultLevel(4, 5)).toBe('passed')
+    expect(resultLevel(3, 5)).toBe('almost')
+    expect(resultLevel(1, 5)).toBe('failed')
   })
 })

@@ -5,13 +5,13 @@ interface Props {
   title: string
   children: ReactNode
   confirmLabel: string
-  cancelLabel?: string
+  cancelLabel: string
   onConfirm: () => void
   onCancel: () => void
 }
 
 /** Toegankelijke bevestiging op basis van <dialog>: focus-trap en Escape komen van de browser. */
-export function ConfirmDialog({ open, title, children, confirmLabel, cancelLabel = 'Annuleren', onConfirm, onCancel }: Props) {
+export function ConfirmDialog({ open, title, children, confirmLabel, cancelLabel, onConfirm, onCancel }: Props) {
   const ref = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {

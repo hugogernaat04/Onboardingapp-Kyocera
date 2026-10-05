@@ -1,6 +1,6 @@
 # Kyocera productonboarding
 
-Onboarding-webapplicatie voor nieuwe verkopers van Kyocera: per product productinformatie, een uitlegvideo en een mini-quiz. Gebouwd met React, Vite, TypeScript en Tailwind CSS. Alle teksten staan in het Nederlands; er is geen backend.
+Onboarding-webapplicatie voor nieuwe verkopers van Kyocera: per product productinformatie, een uitlegvideo en een mini-quiz. Gebouwd met React, Vite, TypeScript en Tailwind CSS. De interface is beschikbaar in het Nederlands (standaard) en Engels, te wisselen met de NL/EN-knop in de header. Er is geen backend.
 
 > De productinhoud is **fictieve placeholder-inhoud**. Vervang die door de echte productinformatie (zie [Een product toevoegen of aanpassen](#een-product-toevoegen-of-aanpassen)).
 
@@ -50,9 +50,15 @@ Alle productdata staat in [`src/data/products.ts`](src/data/products.ts). Bovena
 
 1. Kopieer een bestaand product in de lijst `products` en geef het een unieke `id` (bv. `a3-kleuren-mfp`).
 2. Vul naam, categorie, omschrijvingen, kenmerken, doelgroep en verkoopargumenten in.
-3. Voeg precies 5 quizvragen toe met elk 4 opties. `juisteAntwoord` is het nummer van de juiste optie, beginnend bij 0. De volgorde van de opties wordt bij elke poging automatisch geschud.
+3. Voeg precies 5 quizvragen toe met elk 4 opties, en vul het blok `en` met de Engelse vertaling. `juisteAntwoord` is het nummer van de juiste optie, beginnend bij 0. De volgorde van de opties wordt bij elke poging automatisch geschud.
 
 Het categoriefilter, de voortgangsteller ("3 van 8") en de volgende/vorige-knoppen passen zich vanzelf aan. Een quiz is gehaald bij minimaal 4 van 5 goed (`PASS_SCORE` in `src/lib/progress.ts`).
+
+## Talen (Nederlands en Engels)
+
+- **Interfaceteksten** (knoppen, koppen, quizmeldingen) staan per taal in [`src/i18n/translations.ts`](src/i18n/translations.ts). Pas daar een tekst aan, of voeg een taal toe door het `nl`-blok te kopiëren en te vertalen.
+- **Producttekst** staat in `src/data/products.ts`: de Nederlandse tekst in het product zelf en de Engelse vertaling in het blok `en` van datzelfde product (beschrijvingen, kenmerken, verkoopargumenten, quizvragen en uitleg). Houd de volgorde van kenmerken, opties en vragen gelijk; het juiste antwoord wordt van de Nederlandse vraag overgenomen. Ontbreekt `en`, dan toont de site Nederlands.
+- De gekozen taal wordt in de browser onthouden. Een taal toevoegen kan door `talen` en `Taal` in `products.ts` uit te breiden en overal `en` te dupliceren.
 
 ## Een afbeelding vervangen
 

@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { publicUrl } from '../lib/media'
-import type { Product } from '../data/products'
+import type { LocalizedProduct } from '../data/products'
 
 interface Props {
-  product: Pick<Product, 'naam' | 'categorie' | 'afbeelding'>
+  product: Pick<LocalizedProduct, 'naam' | 'categorie' | 'afbeelding'>
   priority?: boolean
   className?: string
   sizes?: string

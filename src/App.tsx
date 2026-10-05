@@ -1,5 +1,6 @@
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
+import { LanguageProvider } from './i18n/LanguageProvider'
 import { ProgressProvider } from './context/ProgressProvider'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
@@ -8,6 +9,7 @@ import Quiz from './pages/Quiz'
 
 export default function App() {
   return (
+    <LanguageProvider>
     <ProgressProvider>
       <HashRouter>
         <Routes>
@@ -20,5 +22,6 @@ export default function App() {
         </Routes>
       </HashRouter>
     </ProgressProvider>
+    </LanguageProvider>
   )
 }

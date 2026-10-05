@@ -6,23 +6,30 @@ export interface PreparedQuestion extends QuizQuestion {
   opties: string[]
 }
 
-/** Schudt de antwoordopties (Fisher-Yates) en past de index van het juiste antwoord aan. */
-export function prepareQuestions(
-  questions: QuizQuestion[],
-  random: () => number = Math.random,
-): PreparedQuestion[] {
+/** Willekeurige volgorde (Fisher-Yates) van de antwoordopties per vraag. */
+export function createOrders(questions: QuizQuestion[], random: () => number = Math.random): number[][] {
   return questions.map((q) => {
     const order = q.opties.map((_, i) => i)
     for (let i = order.length - 1; i > 0; i--) {
       const j = Math.floor(random() * (i + 1))
       ;[order[i], order[j]] = [order[j], order[i]]
     }
-    return {
-      ...q,
-      opties: order.map((i) => q.opties[i]),
-      juisteAntwoord: order.indexOf(q.juisteAntwoord),
-    }
+    return order
   })
+}
+
+/** Past een vaste volgorde toe en verplaatst de index van het juiste antwoord mee. */
+export function applyOrders(questions: QuizQuestion[], orders: number[][]): PreparedQuestion[] {
+  return questions.map((q, n) => ({
+    ...q,
+    opties: orders[n].map((i) => q.opties[i]),
+    juisteAntwoord: orders[n].indexOf(q.juisteAntwoord),
+  }))
+}
+
+/** Schudt de antwoordopties en past de index van het juiste antwoord aan. */
+export function prepareQuestions(questions: QuizQuestion[], random: () => number = Math.random): PreparedQuestion[] {
+  return applyOrders(questions, createOrders(questions, random))
 }
 
 export interface QuizState {
@@ -59,9 +66,12 @@ export function quizReducer(state: QuizState, action: QuizAction): QuizState {
   }
 }
 
-export function resultMessage(score: number, total: number): { titel: string; tekst: string } {
-  if (score === total) return { titel: 'Perfect!', tekst: 'Alles goed. Je kent dit product door en door.' }
-  if (score >= PASS_SCORE) return { titel: 'Gehaald!', tekst: 'Sterk gedaan. Je bent klaar om dit product te verkopen.' }
-  if (score >= PASS_SCORE - 1) return { titel: 'Bijna!', tekst: 'Nog één stap te gaan. Lees de productinfo nog eens door en probeer opnieuw.' }
-  return { titel: 'Nog niet gehaald', tekst: 'Bekijk de productinfo en de video nog eens en probeer het opnieuw.' }
+export type ResultLevel = 'perfect' | 'passed' | 'almost' | 'failed'
+
+/** Welk bericht hoort bij de score; de tekst zelf staat in src/i18n/translations.ts. */
+export function resultLevel(score: number, total: number): ResultLevel {
+  if (score === total) return 'perfect'
+  if (score >= PASS_SCORE) return 'passed'
+  if (score >= PASS_SCORE - 1) return 'almost'
+  return 'failed'
 }
