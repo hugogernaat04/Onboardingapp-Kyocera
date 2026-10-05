@@ -31,7 +31,7 @@ export default function Home() {
       <section className="on-dark bg-ink text-white">
         <div className="container-page grid gap-8 py-10 sm:py-14 lg:grid-cols-[1.4fr_1fr] lg:items-end lg:py-16">
           <div>
-            <h1 className="max-w-[18ch] text-4xl text-white sm:text-5xl lg:text-6xl">
+            <h1 className="max-w-[18ch] text-4xl text-white sm:text-5xl">
               Welkom bij de Kyocera productonboarding
             </h1>
             <p className="mt-4 max-w-[52ch] text-lg text-white/85">

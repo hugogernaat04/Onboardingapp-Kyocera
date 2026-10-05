@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import type { Product } from '../data/products'
+import { CheckIcon } from './Icons'
 import { ProductImage } from './ProductImage'
 
 export function ProductCard({ product, passed, delay = 0 }: { product: Product; passed: boolean; delay?: number }) {
@@ -17,9 +18,7 @@ export function ProductCard({ product, passed, delay = 0 }: { product: Product; 
           />
           {passed && (
             <span className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-success px-3 py-1.5 text-sm font-semibold text-white shadow animate-pop">
-              <svg aria-hidden="true" viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="m4 10.5 4 4 8-9" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              <CheckIcon className="h-4 w-4" />
               Quiz gehaald
             </span>
           )}

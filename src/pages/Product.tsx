@@ -4,13 +4,10 @@ import { VideoPlayer } from '../components/VideoPlayer'
 import { getProduct, products } from '../data/products'
 import { useProgress } from '../hooks/useProgress'
 import { isPassed, PASS_SCORE } from '../lib/progress'
+import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, ChevronLeftIcon } from '../components/Icons'
 import NotFound from './NotFound'
 
-const Check = () => (
-  <svg aria-hidden="true" viewBox="0 0 20 20" className="mt-1.5 h-5 w-5 shrink-0 text-kyocera-red" fill="none" stroke="currentColor" strokeWidth="2.5">
-    <path d="m4 10.5 4 4 8-9" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-)
+const Check = () => <CheckIcon className="mt-1.5 h-5 w-5 shrink-0 text-kyocera-red" />
 
 export default function Product() {
   const { id } = useParams()
@@ -28,7 +25,7 @@ export default function Product() {
     <article className="pb-28 md:pb-0">
       <div className="container-page pt-4 sm:pt-6">
         <Link to="/" className="btn-ghost -ml-3">
-          <svg aria-hidden="true" viewBox="0 0 20 20" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 4 6 10l6 6" /></svg>
+          <ChevronLeftIcon className="h-5 w-5" />
           Terug naar overzicht
         </Link>
       </div>
@@ -101,14 +98,14 @@ export default function Product() {
       <nav aria-label="Andere producten" className="container-page grid gap-3 border-t border-mist py-8 sm:grid-cols-2">
         {prev ? (
           <Link to={`/product/${prev.id}`} className="btn-secondary h-auto justify-start py-3 text-left">
-            <span aria-hidden="true">←</span>
+            <ArrowLeftIcon className="h-5 w-5 shrink-0" />
             <span><span className="block text-sm font-medium text-steel">Vorig product</span>{prev.naam}</span>
           </Link>
         ) : <span />}
         {next && (
           <Link to={`/product/${next.id}`} className="btn-secondary h-auto justify-end py-3 text-right sm:col-start-2">
             <span><span className="block text-sm font-medium text-steel">Volgend product</span>{next.naam}</span>
-            <span aria-hidden="true">→</span>
+            <ArrowRightIcon className="h-5 w-5 shrink-0" />
           </Link>
         )}
       </nav>

@@ -4,6 +4,7 @@ import { getProduct, type Product } from '../data/products'
 import { useProgress } from '../hooks/useProgress'
 import { PASS_SCORE } from '../lib/progress'
 import { initialQuizState, prepareQuestions, quizReducer, resultMessage } from '../lib/quiz'
+import { ChevronLeftIcon, CheckIcon, CrossIcon } from '../components/Icons'
 import NotFound from './NotFound'
 
 export default function Quiz() {
@@ -64,7 +65,7 @@ function QuizRunner({ product, onRetry }: { product: Product; onRetry: () => voi
   return (
     <div className="container-page max-w-2xl py-6 sm:py-12">
       <Link to={`/product/${product.id}`} className="btn-ghost -ml-3">
-        <svg aria-hidden="true" viewBox="0 0 20 20" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 4 6 10l6 6" /></svg>
+        <ChevronLeftIcon className="h-5 w-5" />
         Stop quiz
       </Link>
       <p className="mt-4 font-semibold text-kyocera-red-dark">Quiz: {product.naam}</p>
@@ -95,7 +96,7 @@ function QuizRunner({ product, onRetry }: { product: Product; onRetry: () => voi
                 className={`flex min-h-14 w-full items-center gap-4 rounded-xl border-2 px-4 py-3 text-left font-medium transition-colors ${style} ${answered ? 'cursor-default' : ''}`}
               >
                 <span aria-hidden="true" className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 font-display font-bold ${answered && isCorrect ? 'border-success bg-success text-white' : answered && isChosen ? 'border-danger bg-danger text-white' : 'border-current'}`}>
-                  {answered && isCorrect ? '✓' : answered && isChosen ? '✕' : String.fromCharCode(65 + i)}
+                  {answered && isCorrect ? <CheckIcon className="h-5 w-5" /> : answered && isChosen ? <CrossIcon className="h-5 w-5" /> : String.fromCharCode(65 + i)}
                 </span>
                 <span className="flex-1">{optie}</span>
                 {answered && isCorrect && <span className="sr-only">Juiste antwoord</span>}
