@@ -55,6 +55,25 @@
   .prose-limit {
     @apply max-w-[68ch];
   }
+  /* Formulieren */
+  .field-label {
+    @apply block font-semibold text-ink;
+  }
+  .field {
+    @apply mt-1 block min-h-12 w-full rounded-lg border-2 border-mist bg-white px-4 py-2 text-base text-ink placeholder:text-steel focus-visible:border-ink;
+  }
+  .field[aria-invalid='true'] {
+    @apply border-danger;
+  }
+  .field-hint {
+    @apply mt-1 text-sm text-steel;
+  }
+  .field-error {
+    @apply mt-1 text-sm font-semibold text-danger;
+  }
+  .btn-danger {
+    @apply btn border-2 border-danger bg-white text-danger hover:bg-danger hover:text-white;
+  }
 }
 
 [data-reveal] {

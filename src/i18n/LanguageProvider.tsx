@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
-import { talen, type Taal } from '../data/products'
+import { talen, type Taal } from '../lib/catalog'
 import { LanguageContext } from './LanguageContext'
 import { dictionaries, type TranslationKey } from './translations'
 
