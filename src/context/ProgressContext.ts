@@ -5,8 +5,8 @@ export interface ProgressContextValue {
   progress: Progress
   passedCount: number
   total: number
-  recordResult: (productId: string, score: number, total: number) => void
-  resetProgress: () => void
+  /** Slaat een quizresultaat op in de database. Geeft false als dat niet lukte. */
+  recordResult: (productId: string, score: number) => Promise<boolean>
 }
 
 export const ProgressContext = createContext<ProgressContextValue | null>(null)

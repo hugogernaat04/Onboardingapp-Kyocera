@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import type { LocalizedProduct } from '../data/products'
+import { LoadingRegion, Skeleton } from '../components/Skeleton'
+import type { LocalizedProduct } from '../lib/catalog'
 import { useCatalog } from '../hooks/useCatalog'
 import { useLanguage } from '../hooks/useLanguage'
 import { useProgress } from '../hooks/useProgress'
@@ -11,11 +12,30 @@ import { CtaButton } from '../components/Cta'
 import NotFound from './NotFound'
 
 export default function Quiz() {
-  const { id } = useParams()
-  const { getProduct } = useCatalog()
-  const product = getProduct(id)
+  const { slug } = useParams()
+  const { getProduct, loading } = useCatalog()
+  const { t } = useLanguage()
+  const product = getProduct(slug)
   const [attempt, setAttempt] = useState(0)
+  if (!product && loading) {
+    return (
+      <div className="container-page max-w-2xl py-12">
+        <LoadingRegion label={t('common.loading')}>
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="mt-6 h-20 w-full" />
+        </LoadingRegion>
+      </div>
+    )
+  }
   if (!product) return <NotFound messageKey="quiz.notFound" />
+  if (product.quiz.length === 0) {
+    return (
+      <div className="container-page max-w-2xl py-12 text-center">
+        <p className="text-graphite">{t('quiz.noQuestions')}</p>
+        <Link to={`/product/${product.slug}`} className="btn-secondary mt-6">{t('quiz.backProduct')}</Link>
+      </div>
+    )
+  }
   return <QuizRunner key={`${product.id}-${attempt}`} product={product} onRetry={() => setAttempt((a) => a + 1)} />
 }
 
@@ -26,14 +46,19 @@ function QuizRunner({ product, onRetry }: { product: LocalizedProduct; onRetry: 
   const [state, dispatch] = useReducer(quizReducer, initialQuizState)
   const { recordResult } = useProgress()
   const { t } = useLanguage()
+  const [saved, setSaved] = useState<boolean | null>(null)
+  const savedOnce = useRef(false)
   const nextRef = useRef<HTMLButtonElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
   const total = questions.length
 
   useEffect(() => {
     if (state.finished) {
-      recordResult(product.id, state.score, total)
       headingRef.current?.focus()
+      if (!savedOnce.current) {
+        savedOnce.current = true
+        void recordResult(product.id, state.score).then(setSaved)
+      }
     }
   }, [state.finished, state.score, total, product.id, recordResult])
 
@@ -54,9 +79,10 @@ function QuizRunner({ product, onRetry }: { product: LocalizedProduct; onRetry: 
           <h1 ref={headingRef} tabIndex={-1} className="mt-4 text-3xl outline-none sm:text-4xl">{t(`result.${level}.title`)}</h1>
           <p className="mx-auto mt-2 max-w-[44ch] text-graphite">{t(`result.${level}.text`)}</p>
           <p className="mt-2 text-sm text-steel">{t('quiz.passNote', { name: product.naam, min: PASS_SCORE, total })}</p>
+          {saved === false && <p role="alert" className="mt-4 rounded-xl bg-danger-soft p-4 text-danger">{t('quiz.saveFailed')}</p>}
           <div className="mt-8 flex flex-col gap-3">
             <button type="button" className="btn-primary" onClick={onRetry}>{t('quiz.retry')}</button>
-            <Link to={`/product/${product.id}`} className="btn-secondary">{t('quiz.backProduct')}</Link>
+            <Link to={`/product/${product.slug}`} className="btn-secondary">{t('quiz.backProduct')}</Link>
             <Link to="/" className="btn-ghost">{t('quiz.toOverview')}</Link>
           </div>
         </div>
@@ -71,7 +97,7 @@ function QuizRunner({ product, onRetry }: { product: LocalizedProduct; onRetry: 
 
   return (
     <div className="container-page max-w-2xl py-6 sm:py-12">
-      <Link to={`/product/${product.id}`} className="btn-ghost -ml-3">
+      <Link to={`/product/${product.slug}`} className="btn-ghost -ml-3">
         <ChevronLeftIcon className="h-5 w-5" />
         {t('quiz.stop')}
       </Link>

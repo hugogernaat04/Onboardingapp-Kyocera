@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import type { LocalizedProduct } from '../data/products'
+import type { LocalizedProduct } from '../lib/catalog'
 import { useLanguage } from '../hooks/useLanguage'
 import { Reveal } from './Reveal'
 import { CheckIcon } from './Icons'
@@ -10,7 +10,7 @@ export function ProductCard({ product, passed, delay = 0 }: { product: Localized
   return (
     <Reveal as="li" delay={delay}>
       <Link
-        to={`/product/${product.id}`}
+        to={`/product/${product.slug}`}
         className="group flex h-full flex-col rounded-[1.75rem] bg-fog p-1.5 ring-1 ring-ink/10 transition-[transform,box-shadow] duration-500 hover:-translate-y-1 hover:shadow-card hover:ring-ink/30"
       >
         <div className="relative flex flex-1 flex-col overflow-hidden rounded-[calc(1.75rem-0.375rem)] bg-white shadow-[inset_0_1px_0_rgb(255_255_255)]">

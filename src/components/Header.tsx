@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 import { useCatalog } from '../hooks/useCatalog'
 import { useLanguage } from '../hooks/useLanguage'
 import { LanguageSwitch } from './LanguageSwitch'
@@ -17,6 +18,8 @@ export function Header() {
   const { progress, passedCount, total } = useProgress()
   const { products } = useCatalog()
   const { t } = useLanguage()
+  const { profile, user, isAdmin, signOut } = useAuth()
+  const displayName = profile?.naam || user?.email || ''
   const buttonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
@@ -34,14 +37,15 @@ export function Header() {
   const next = products.find((p) => !isPassed(progress[p.id]))
   const items = [
     { to: '/', label: t('nav.overview') },
-    ...(next ? [{ to: `/product/${next.id}`, label: t('nav.continue') }] : []),
+    ...(next ? [{ to: `/product/${next.slug}`, label: t('nav.continue') }] : []),
+    ...(isAdmin ? [{ to: '/admin', label: t('nav.admin') }] : []),
   ]
   const links = (stagger: boolean) =>
     items.map((item, i) => (
       <NavLink
         key={item.to}
         to={item.to}
-        end
+        end={item.to !== '/admin'}
         className={(s) => `${navClass(s)} ${stagger ? 'animate-rise' : ''}`}
         style={stagger ? { animationDelay: `${60 + i * 70}ms` } : undefined}
       >
@@ -64,6 +68,8 @@ export function Header() {
             {t('nav.passedShort', { n: passedCount, total })}
           </span>
           <LanguageSwitch className="ml-2" />
+          <span className="ml-3 hidden max-w-[10rem] truncate text-sm font-medium text-graphite lg:inline" title={t('nav.loggedInAs', { naam: displayName })}>{displayName}</span>
+          <button type="button" onClick={() => void signOut()} className={`${navClass({ isActive: false })} ml-1`}>{t('nav.logout')}</button>
         </nav>
 
         <div className="flex items-center gap-1 md:hidden">
@@ -91,6 +97,8 @@ export function Header() {
           <div className="flex flex-col gap-1 p-3">
             {links(true)}
             <p className="px-4 py-3 text-graphite">{t('home.progressTitle', { n: passedCount, total })}</p>
+            <p className="px-4 text-sm text-steel">{t('nav.loggedInAs', { naam: displayName })}</p>
+            <button type="button" onClick={() => void signOut()} className={`${navClass({ isActive: false })} justify-start`}>{t('nav.logout')}</button>
           </div>
         </nav>
       )}

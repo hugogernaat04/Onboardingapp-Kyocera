@@ -1,18 +1,17 @@
 import { useMemo, useState } from 'react'
-import { ConfirmDialog } from '../components/ConfirmDialog'
 import { ProductCard } from '../components/ProductCard'
+import { LoadingRegion, Skeleton } from '../components/Skeleton'
 import { useCatalog } from '../hooks/useCatalog'
 import { useLanguage } from '../hooks/useLanguage'
 import { useProgress } from '../hooks/useProgress'
 import { isPassed, PASS_SCORE } from '../lib/progress'
 
 export default function Home() {
-  const { progress, passedCount, total, resetProgress } = useProgress()
-  const { products, categories } = useCatalog()
+  const { progress, passedCount, total } = useProgress()
+  const { products, categories, loading, error, reload } = useCatalog()
   const { t } = useLanguage()
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState<string | null>(null)
-  const [confirming, setConfirming] = useState(false)
 
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -97,7 +96,32 @@ export default function Home() {
 
         <p className="sr-only" role="status">{t(visible.length === 1 ? 'home.countOne' : 'home.countMany', { n: visible.length })}</p>
 
-        {visible.length > 0 ? (
+        {loading ? (
+          <LoadingRegion label={t('common.loading')}>
+            <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {[0, 1, 2, 3].map((i) => (
+                <li key={i} className="rounded-[1.75rem] bg-fog p-1.5">
+                  <Skeleton className="aspect-[4/3] w-full rounded-[1.4rem] bg-mist" />
+                  <div className="space-y-3 p-5">
+                    <Skeleton className="h-4 w-24 bg-mist" />
+                    <Skeleton className="h-7 w-3/4 bg-mist" />
+                    <Skeleton className="h-12 w-full bg-mist" />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </LoadingRegion>
+        ) : error ? (
+          <div role="alert" className="mt-6 rounded-xl border-2 border-dashed border-mist p-8 text-center sm:p-12">
+            <p className="font-display text-2xl font-semibold">{t('home.loadError')}</p>
+            <p className="mt-2 text-graphite">{t('home.loadErrorText')}</p>
+            <button type="button" className="btn-primary mt-5" onClick={reload}>{t('common.retry')}</button>
+          </div>
+        ) : products.length === 0 ? (
+          <div className="mt-6 rounded-xl border-2 border-dashed border-mist p-8 text-center sm:p-12">
+            <p className="font-display text-2xl font-semibold">{t('home.noProducts')}</p>
+          </div>
+        ) : visible.length > 0 ? (
           <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {visible.map((p, i) => (
               <ProductCard key={p.id} product={p} passed={isPassed(progress[p.id])} delay={(i % 4) * 90} />
@@ -113,24 +137,8 @@ export default function Home() {
           </div>
         )}
 
-        <div className="mt-12 flex flex-col items-start gap-2 border-t border-mist pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-steel">{t('home.storedNote')}</p>
-          <button type="button" className="btn-ghost -ml-5 sm:ml-0" onClick={() => setConfirming(true)} disabled={passedCount === 0 && Object.keys(progress).length === 0}>
-            {t('home.reset')}
-          </button>
-        </div>
+        <p className="mt-12 border-t border-mist pt-6 text-steel">{t('home.storedNote')}</p>
       </section>
-
-      <ConfirmDialog
-        open={confirming}
-        title={t('home.resetTitle')}
-        confirmLabel={t('home.resetConfirm')}
-        cancelLabel={t('common.cancel')}
-        onCancel={() => setConfirming(false)}
-        onConfirm={() => { resetProgress(); setConfirming(false) }}
-      >
-        <p>{t('home.resetText')}</p>
-      </ConfirmDialog>
     </>
   )
 }

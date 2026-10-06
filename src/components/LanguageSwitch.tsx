@@ -1,4 +1,4 @@
-import { talen, type Taal } from '../data/products'
+import { talen, type Taal } from '../lib/catalog'
 import { useLanguage } from '../hooks/useLanguage'
 
 const labels: Record<Taal, { kort: string; naam: string }> = {

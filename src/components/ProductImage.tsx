@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { publicUrl } from '../lib/media'
-import type { LocalizedProduct } from '../data/products'
+import type { LocalizedProduct } from '../lib/catalog'
 
 interface Props {
   product: Pick<LocalizedProduct, 'naam' | 'categorie' | 'afbeelding'>
