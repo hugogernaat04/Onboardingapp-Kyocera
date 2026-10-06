@@ -1,47 +1,44 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { clearProgress, countPassed, isPassed, loadProgress, recordScore, saveProgress, STORAGE_KEY } from './progress'
-
-beforeEach(() => localStorage.clear())
+import { describe, expect, it } from 'vitest'
+import { addResult, countPassed, isPassed, PASS_SCORE, progressFromResults } from './progress'
 
 describe('isPassed', () => {
-  it('is gehaald vanaf 4 van 5', () => {
-    expect(isPassed({ score: 4, total: 5, datum: '' })).toBe(true)
-    expect(isPassed({ score: 3, total: 5, datum: '' })).toBe(false)
+  it('volgt het veld gehaald', () => {
+    expect(isPassed({ score: 4, gehaald: true, datum: '' })).toBe(true)
+    expect(isPassed({ score: 3, gehaald: false, datum: '' })).toBe(false)
     expect(isPassed(undefined)).toBe(false)
   })
+  it('haalt een quiz vanaf 4 goed', () => expect(PASS_SCORE).toBe(4))
 })
 
-describe('recordScore', () => {
+describe('addResult', () => {
   it('bewaart alleen een betere score', () => {
-    const a = recordScore({}, 'x', 4, 5)
+    const a = addResult({}, 'x', 4, true, '2026-01-01')
     expect(a.x.score).toBe(4)
-    expect(recordScore(a, 'x', 2, 5)).toBe(a)
-    expect(recordScore(a, 'x', 5, 5).x.score).toBe(5)
+    expect(addResult(a, 'x', 2, false, '2026-01-02')).toBe(a)
+    expect(addResult(a, 'x', 5, true, '2026-01-03').x.score).toBe(5)
+  })
+  it('behoudt gehaald als een latere, hogere score dat ook is', () => {
+    const a = addResult({}, 'x', 3, false, '2026-01-01')
+    expect(addResult(a, 'x', 4, true, '2026-01-02').x.gehaald).toBe(true)
+  })
+})
+
+describe('progressFromResults', () => {
+  it('neemt per product de beste score uit alle pogingen', () => {
+    const p = progressFromResults([
+      { product_id: 'a', score: 2, gehaald: false, created_at: '1' },
+      { product_id: 'a', score: 5, gehaald: true, created_at: '2' },
+      { product_id: 'a', score: 3, gehaald: false, created_at: '3' },
+      { product_id: 'b', score: 1, gehaald: false, created_at: '4' },
+    ])
+    expect(p.a).toMatchObject({ score: 5, gehaald: true })
+    expect(p.b).toMatchObject({ score: 1, gehaald: false })
   })
   it('telt gehaalde producten', () => {
-    const p = recordScore(recordScore({}, 'a', 5, 5), 'b', 1, 5)
+    const p = progressFromResults([
+      { product_id: 'a', score: 5, gehaald: true, created_at: '1' },
+      { product_id: 'b', score: 1, gehaald: false, created_at: '2' },
+    ])
     expect(countPassed(p, ['a', 'b', 'c'])).toBe(1)
-  })
-})
-
-describe('opslag', () => {
-  it('bewaart en herstelt voortgang via localStorage', () => {
-    saveProgress(recordScore({}, 'a', 5, 5))
-    expect(loadProgress().a.score).toBe(5)
-    clearProgress()
-    expect(loadProgress()).toEqual({})
-  })
-  it('negeert ongeldige of kapotte data', () => {
-    localStorage.setItem(STORAGE_KEY, '{kapot')
-    expect(loadProgress()).toEqual({})
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ a: 'nee', b: { score: 4, total: 5, datum: '' } }))
-    expect(Object.keys(loadProgress())).toEqual(['b'])
-  })
-  it('crasht niet als localStorage niet beschikbaar is', () => {
-    vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => { throw new Error('geblokkeerd') })
-    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('geblokkeerd') })
-    expect(loadProgress()).toEqual({})
-    expect(() => saveProgress({})).not.toThrow()
-    vi.restoreAllMocks()
   })
 })

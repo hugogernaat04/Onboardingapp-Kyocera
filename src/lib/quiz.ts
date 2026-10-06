@@ -1,4 +1,4 @@
-import type { QuizQuestion } from '../data/products'
+import type { QuizQuestion } from './catalog'
 import { PASS_SCORE } from './progress'
 
 export interface PreparedQuestion extends QuizQuestion {

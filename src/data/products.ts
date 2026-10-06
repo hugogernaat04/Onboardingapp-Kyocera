@@ -1,4 +1,8 @@
 /**
+ * SEEDBRON – de oorspronkelijke productdata, alleen nog gebruikt om supabase/migrations/20260101000002_seed_producten.sql
+ * te genereren en om de data in de tests te controleren. De app zelf leest alle producten uit Supabase;
+ * producten beheer je nu in het beheerscherm (#/admin). De uitleg hieronder is de oude werkwijze.
+ *
  * PRODUCTDATA – het enige bestand dat je hoeft aan te passen voor de inhoud.
  *
  * Een product toevoegen:
@@ -29,8 +33,9 @@
  * Alle productnamen en -teksten hieronder zijn fictieve placeholders.
  */
 
-export const talen = ['nl', 'en'] as const
-export type Taal = (typeof talen)[number]
+import { talen, type Taal } from '../lib/catalog'
+export { talen }
+export type { Taal }
 
 export interface QuizQuestion {
   vraag: string
