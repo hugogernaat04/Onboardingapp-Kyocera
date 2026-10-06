@@ -4,3 +4,8 @@ dist
 .DS_Store
 coverage
 .vite
+
+# Lokale Supabase-gegevens
+.env
+.env.*
+!.env.example
