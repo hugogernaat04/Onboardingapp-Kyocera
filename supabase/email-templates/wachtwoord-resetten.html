@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light only">
+  <meta name="supported-color-schemes" content="light only">
+  <title>Kies een nieuw wachtwoord</title>
+</head>
+<body style="margin:0;padding:0;background-color:#F3F3F4;">
+  <!-- Voorbeeldtekst in de inbox -->
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:#F3F3F4;">Kies een nieuw wachtwoord voor de Kyocera productonboarding.</div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#F3F3F4" style="background-color:#F3F3F4;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;">
+          <tr>
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;border-radius:16px;border:1px solid #E3E3E5;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="padding:32px 32px 0 32px;">
+                    <img src="{{ .SiteURL }}brand/kyocera-logo-mail.png" width="160" height="40" alt="Kyocera" style="display:block;border:0;outline:none;text-decoration:none;width:160px;height:auto;">
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:28px 32px 0 32px;font-family:Helvetica,Arial,sans-serif;color:#111111;">
+                    <h1 style="margin:0;font-size:26px;line-height:1.25;font-weight:700;color:#111111;">Kies een nieuw wachtwoord</h1>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:14px 32px 0 32px;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#3A3A3C;">
+                    Je hebt gevraagd om je wachtwoord opnieuw in te stellen. Klik op de knop om een nieuw wachtwoord te kiezen. De link werkt één keer en is beperkt geldig.
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:28px 32px 0 32px;">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td align="center" bgcolor="#E31A2F" style="background-color:#E31A2F;border-radius:999px;">
+                          <a href="{{ .SiteURL }}#/auth/bevestigen?token_hash={{ .TokenHash }}&type=recovery" target="_blank" style="display:inline-block;padding:15px 32px;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:700;line-height:1;color:#FFFFFF;text-decoration:none;border-radius:999px;">Nieuw wachtwoord kiezen</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:24px 32px 0 32px;font-family:Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#5C5C60;">
+                    Werkt de knop niet? Kopieer deze link naar je browser:<br>
+                    <a href="{{ .SiteURL }}#/auth/bevestigen?token_hash={{ .TokenHash }}&type=recovery" style="color:#C2152A;word-break:break-all;">{{ .SiteURL }}#/auth/bevestigen?token_hash={{ .TokenHash }}&type=recovery</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:24px 32px 32px 32px;font-family:Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#5C5C60;">
+                    Heb je dit niet aangevraagd? Dan hoef je niets te doen: je wachtwoord blijft zoals het was.<br>Klik de link maar één keer aan; een tweede keer werkt niet meer.
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" style="padding:20px 16px 0 16px;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#5C5C60;">
+              Kyocera productonboarding<br>
+              Deze e-mail is automatisch verstuurd. Reageren hierop heeft geen zin.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

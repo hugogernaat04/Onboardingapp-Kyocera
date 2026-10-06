@@ -14,6 +14,7 @@ import AdminProducts from './pages/admin/AdminProducts'
 import AdminUsers from './pages/admin/AdminUsers'
 import ProductEdit from './pages/admin/ProductEdit'
 import ConfirmToken from './pages/auth/ConfirmToken'
+import LinkExpired from './pages/auth/LinkExpired'
 import Login from './pages/auth/Login'
 import SetPassword from './pages/auth/SetPassword'
 import Home from './pages/Home'
@@ -29,6 +30,7 @@ const router = createHashRouter([
       { path: 'login', element: <Login /> },
       { path: 'wachtwoord-instellen', element: <SetPassword /> },
       { path: 'auth/bevestigen', element: <ConfirmToken /> },
+      { path: 'link-verlopen', element: <LinkExpired /> },
     ],
   },
   {

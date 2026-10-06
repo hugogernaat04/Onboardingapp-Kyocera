@@ -109,26 +109,20 @@ Log daarna in op de app. In de header verschijnt nu **Beheer**. Alle volgende ad
 
 **Wachtwoord vergeten:** op de inlogpagina staat **Wachtwoord vergeten?**. De persoon krijgt een link om een nieuw wachtwoord te kiezen.
 
-### De e-mailtemplates aanpassen (eenmalig, belangrijk)
+### De e-mailtemplates plaatsen (eenmalig, belangrijk)
 
-Deze app gebruikt een `#` in de URL (HashRouter), en de standaardlinks van Supabase werken daar slecht mee. Pas daarom twee templates aan onder **Authentication → Email Templates**. Vervang in beide de link door de hieronder genoemde.
+De standaardmails van Supabase zijn kaal en hun links werken slecht met de `#` in de URL van deze app. In [`supabase/email-templates/`](supabase/email-templates/) staan twee mooie templates met het Kyocera-logo:
 
-**Invite user** (let op: `{{ .SiteURL }}` moet eindigen op een `/`, zie stap 6):
+| Bestand | Plak in (Authentication → Email Templates) | Onderwerp (Subject) |
+| --- | --- | --- |
+| `wachtwoord-resetten.html` | **Reset password** | Kies een nieuw wachtwoord voor de Kyocera productonboarding |
+| `uitnodiging.html` | **Invite user** | Je bent uitgenodigd voor de Kyocera productonboarding |
 
-```html
-<h2>Je bent uitgenodigd</h2>
-<p>Je bent uitgenodigd voor de Kyocera productonboarding.</p>
-<p><a href="{{ .SiteURL }}#/auth/bevestigen?token_hash={{ .TokenHash }}&type=invite">Kies je wachtwoord</a></p>
-```
+Open het bestand, kopieer alles, plak het in het veld **Message body** (de HTML-weergave, "Source") en klik **Save**. Gebruik **Preview** om het resultaat te zien.
 
-**Reset password:**
-
-```html
-<h2>Wachtwoord opnieuw instellen</h2>
-<p><a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery">Kies een nieuw wachtwoord</a></p>
-```
-
-De reset-link gebruikt `{{ .RedirectTo }}`, dat de app zelf meegeeft. Daardoor werkt dezelfde template zowel lokaal als op GitHub Pages.
+- De knop gaat naar `{{ .SiteURL }}#/auth/bevestigen?token_hash=…`. Daarom moet de **Site URL** (stap 6) eindigen op een `/`.
+- Het logo wordt geladen van de site zelf (`brand/kyocera-logo-mail.png`), dus het verschijnt zodra die versie is gepubliceerd.
+- Een link werkt maar één keer. Klik je er een tweede keer op (of opent een mailprogramma hem alvast), dan zie je "Deze link werkt niet meer"; vraag dan een nieuwe aan.
 
 ## 6. Site URL en Redirect URLs instellen
 
@@ -139,7 +133,7 @@ Ga naar **Authentication → URL Configuration**:
   - `https://hugogernaat04.github.io/Onboardingapp-Kyocera/**`
   - `http://localhost:5173/**`
 
-Zonder deze lijst weigert Supabase de redirect van de resetlink. Uitnodigingen gebruiken altijd de Site URL, ook als je lokaal test; test uitnodigen dus bij voorkeur op de echte site.
+Met de templates uit stap 5 gaan reset- en uitnodigingslinks altijd naar de Site URL, ook als je lokaal test; test ze dus bij voorkeur op de echte site.
 
 ## 7. De GitHub-secrets toevoegen
 
