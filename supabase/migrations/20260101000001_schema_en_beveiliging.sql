@@ -75,7 +75,7 @@ as $$
   );
 $$;
 
-revoke all on function public.is_admin() from public;
+revoke all on function public.is_admin() from public, anon;
 grant execute on function public.is_admin() to authenticated;
 
 -- Maakt automatisch een profiel aan bij elke nieuwe gebruiker (uitnodiging of registratie).
@@ -270,3 +270,12 @@ create policy "admin vervangt product-media"
 create policy "admin verwijdert product-media"
   on storage.objects for delete to authenticated
   using (bucket_id = 'product-media' and (select public.is_admin()));
+
+-- ---------------------------------------------------------------------------
+-- Functies die alleen als trigger bedoeld zijn mogen niet via de API (/rest/v1/rpc) aanroepbaar zijn.
+-- Triggers blijven werken: daarvoor is geen EXECUTE-recht van de gebruiker nodig.
+-- ---------------------------------------------------------------------------
+
+revoke all on function public.handle_new_user() from public, anon, authenticated;
+revoke all on function public.protect_profile() from public, anon, authenticated;
+revoke all on function public.sync_profile_email() from public, anon, authenticated;
